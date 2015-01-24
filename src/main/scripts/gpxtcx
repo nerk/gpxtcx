@@ -1,0 +1,25 @@
+#!/bin/sh
+# Copyright 2011-2015 Thomas Kern
+# 
+# Licensed under the MIT License
+#
+
+JAVA_EXE=java
+if [ "$JAVA_HOME" != "" ]
+then
+    JAVA_EXE="$JAVA_HOME/bin/$JAVA_EXE"
+fi
+
+VM_OPTS="-Dfile.encoding=utf-8"
+
+DIR=`dirname $0`
+LIBDIR=$DIR/lib
+
+for i in $LIBDIR/*.jar 
+do
+    CLASSPATH=$CLASSPATH:$i
+done
+
+CLASSPATH=$CLASSPATH:$DIR/gpxtcx-1.0-SNAPSHOT.jar
+
+"$JAVA_EXE" $VM_OPTS -classpath "$CLASSPATH" de.kernwelt.gpxtcx.Main $*
