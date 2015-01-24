@@ -35,11 +35,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Tcx
-{
+public class Tcx {
 
     private List<TrackPoint> trackPoints;
     private Date dateTime;
+    private int lastPointIdx = 0;
 
     public Tcx() {
     }
@@ -77,6 +77,7 @@ public class Tcx
         NodeList lap = document.getElementsByTagName("Lap");
         String startTime = lap.item(0).getAttributes().getNamedItem("StartTime").getNodeValue();
         dateTime = DatatypeConverter.parseDateTime(startTime).getTime();
+        lastPointIdx = 0;
     }
 
     public Date getStartTime() {
@@ -84,19 +85,23 @@ public class Tcx
     }
 
     public int getHeartRateForTime(long time) {
-
-        for (TrackPoint tp : trackPoints) {
-            if (time >= tp.getTime() - 5000 && time < tp.getTime() + 5000) {
-                return tp.getHeartRate();
+        for (int i = lastPointIdx; i < trackPoints.size(); i++) {
+            TrackPoint tp = trackPoints.get(i);
+            if (time >= tp.getTime() - 5000) {
+                if (time < tp.getTime() + 5000) {
+                    lastPointIdx = i;
+                    return tp.getHeartRate();
+                } else if ((tp.getTime() - time) > 10000) {
+                    return 0;
+                }
             }
         }
         return 0;
     }
 
-    public static class TrackPoint
-    {
+    public static class TrackPoint {
         private long time;
-        private int  heartRate;
+        private int heartRate;
 
         public TrackPoint(long time, int heartRate) {
             this.time = time;
