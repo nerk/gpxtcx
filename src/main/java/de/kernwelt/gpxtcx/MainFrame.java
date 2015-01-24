@@ -49,8 +49,9 @@ public class MainFrame extends JFrame
     private JButton    btnAlignTime;
 
     /**
-     * Launch the application.
-     */
+     * Show the frame. Testing only!
+     * 
+    
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable()
         {
@@ -65,6 +66,7 @@ public class MainFrame extends JFrame
             }
         });
     }
+    */
 
     /**
      * Create the frame.
