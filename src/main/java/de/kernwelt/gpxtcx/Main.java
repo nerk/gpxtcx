@@ -22,6 +22,7 @@
 
 package de.kernwelt.gpxtcx;
 
+import com.jgoodies.looks.plastic.Plastic3DLookAndFeel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -52,6 +53,12 @@ public class Main {
 
             public void run() {
                 try {
+
+                    try {
+                        UIManager.setLookAndFeel(new Plastic3DLookAndFeel());
+                    } catch (Exception e) {
+                    }
+
                     frame = new MainFrame();
                     frame.getSaveBtn().setEnabled(false);
                     frame.getBtnAlignTime().setEnabled(false);
@@ -116,19 +123,35 @@ public class Main {
                                 }
                                 if (doCreate) {
                                     frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                                    SwingUtilities.invokeLater(new Runnable() {
-                                        public void run() {
+                                    SwingWorker worker = new SwingWorker<Boolean, Void>() {
+                                        @Override
+                                        public Boolean doInBackground() throws Exception {
+                                            create(mergedFile);
+                                            return true;
+                                        }
+
+                                        @Override
+                                        public void done() {
+                                            frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                                             try {
-                                                create(mergedFile);
-                                                frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                                                get();
                                                 Util.showInfoMessage(frame, "Merged file '" + mergedFile.getAbsolutePath() + "' saved successfully!");
-                                            } catch (Exception e3) {
-                                                Util.showErrorMessage(frame, "Error saving " + mergedFile.getAbsolutePath());
-                                            } finally {
-                                                frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                                            } catch (InterruptedException ignore) {
+                                                // ignored
+                                            } catch (java.util.concurrent.ExecutionException e) {
+                                                Throwable cause = e.getCause();
+                                                String err = null;
+                                                if (cause != null) {
+                                                    err = cause.getMessage();
+                                                } else {
+                                                    err = e.getMessage();
+                                                }
+                                                Util.showErrorMessage(frame, err);
                                             }
                                         }
-                                    });
+                                    };
+
+                                    worker.execute();
 
                                 }
                             }

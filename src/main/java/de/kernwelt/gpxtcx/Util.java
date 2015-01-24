@@ -36,11 +36,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 
-/**
- * 
- * @author Thomas Kern
- * 
- */
 public class Util
 {
     private static File       currentDir;
@@ -116,11 +111,11 @@ public class Util
     }
 
     public static void showErrorMessage(Component parent, String message) {
-        JOptionPane.showMessageDialog(parent, message, "Fehler", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(parent, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     public static boolean showYesNoMessage(Component parent, String message) {
-        return JOptionPane.showConfirmDialog(parent, message, "Warnung", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+        return JOptionPane.showConfirmDialog(parent, message, "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
     }
 
     public static File getFile(Component parent, boolean save, String suffix) {
