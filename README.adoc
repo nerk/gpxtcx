@@ -19,6 +19,9 @@ years ago and do not really have a huge interest in it.
 However, instead of having it just lying around on my local disk, it
 just found a new home on GitHub!
 
+NOTE: There is a very similar project named http://sourceforge.net/projects/gpxtcxwelder/[GpxTcxWelder],
+which does a similar thing by merging waypoint information from a GPX file into a TCX file.
+
 == Installation
 
 To run the program you need to have at least a Java Runtime Environment >= 6 installed on your computer.
