@@ -122,7 +122,7 @@ public class Main {
                                     doCreate = Util.showYesNoMessage(frame, "File already exists. Overwrite?");
                                 }
                                 if (doCreate) {
-                                    frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                                    Blocker.setBusy(frame, true);
                                     SwingWorker worker = new SwingWorker<Boolean, Void>() {
                                         @Override
                                         public Boolean doInBackground() throws Exception {
@@ -132,7 +132,7 @@ public class Main {
 
                                         @Override
                                         public void done() {
-                                            frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                                            Blocker.setBusy(frame, false);
                                             try {
                                                 get();
                                                 Util.showInfoMessage(frame, "Merged file '" + mergedFile.getAbsolutePath() + "' saved successfully!");
@@ -152,7 +152,6 @@ public class Main {
                                     };
 
                                     worker.execute();
-
                                 }
                             }
                         }
